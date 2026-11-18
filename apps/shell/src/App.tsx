@@ -1,10 +1,11 @@
-import { Errored, isPending, lazy, Loading, Show, type ParentComponent } from 'solid-js';
+import { createMemo, Errored, isPending, lazy, Loading, Show, type ParentComponent } from 'solid-js';
 import { Portal } from '@solidjs/web';
 import { createLocation, LocationContext } from 'places/location';
-import { createDesktop, type Desktop, type WindowId } from './desktop';
+import { createDesktop, type Desktop, type FrameId, type WindowId } from './desktop';
 import { GraphStatus } from './GraphStatus';
 import { bundleHost } from './origin';
-import { ALERT, CHECK, DISK, DOCUMENT, FOLDER, HOURGLASS, MARK, PixelIcon } from './pixel';
+import { ALERT, APP, CHECK, DISK, DOCUMENT, FOLDER, HOURGLASS, MARK, PixelIcon } from './pixel';
+import { remoteBase } from './remote-base';
 import './App.css';
 
 // Components from two other bundles, each fetched on first render.
@@ -131,9 +132,25 @@ export default function App() {
               </Portal>
             </Loading>
           </Errored>
+
+          {/* The same remotes, loaded the other way: each one's own deployed page in an iframe. */}
+          <Show when={desktop.isOpen('places-frame')}>
+            <FrameWindow id="places-frame" name="places" desktop={desktop} />
+          </Show>
+          <Show when={desktop.isOpen('forecast-frame')}>
+            <FrameWindow id="forecast-frame" name="forecast" desktop={desktop} />
+          </Show>
         </div>
 
-        <nav class="desk-icons" aria-label="Links">
+        <nav class="desk-icons" aria-label="Desktop">
+          <button type="button" class="desk-icon" onClick={() => desktop.open('places-frame')}>
+            <PixelIcon art={APP} scale={3} />
+            <span>places iframe</span>
+          </button>
+          <button type="button" class="desk-icon" onClick={() => desktop.open('forecast-frame')}>
+            <PixelIcon art={APP} scale={3} />
+            <span>forecast iframe</span>
+          </button>
           <a class="desk-icon" href={REPO}>
             <PixelIcon art={FOLDER} scale={3} />
             <span>Repository</span>
@@ -149,16 +166,6 @@ export default function App() {
         </nav>
       </main>
 
-      {/* The drag outline: the window stays put while this follows the pointer. */}
-      <Show when={desktop.outline()}>
-        {(box) => (
-          <div
-            class="drag-outline"
-            aria-hidden="true"
-            style={{ left: `${box().x}px`, top: `${box().y}px`, width: `${box().w}px`, height: `${box().h}px` }}
-          />
-        )}
-      </Show>
     </LocationContext>
   );
 }
@@ -181,6 +188,44 @@ const Slot: ParentComponent<{ id: WindowId; desktop: Desktop }> = (props) => (
     {props.children}
   </div>
 );
+
+/**
+ * A remote's own deployed page in an iframe. Unlike the federated windows, it is
+ * a separate document with its own copy of Solid and its own state, so nothing
+ * done here reaches the rest of the desktop.
+ */
+function FrameWindow(props: { id: FrameId; name: 'places' | 'forecast'; desktop: Desktop }) {
+  const src = createMemo(() => remoteBase(props.name));
+  const host = createMemo(() => {
+    const url = src();
+    return url ? new URL(url).host : 'unknown host';
+  });
+
+  return (
+    <Slot id={props.id} desktop={props.desktop}>
+      <section class="window frame-window" aria-labelledby={`${props.id}-title`}>
+        <header class="window-bar">
+          <button
+            type="button"
+            class="window-close"
+            aria-label={`Close the ${props.name} iframe`}
+            onClick={() => props.desktop.close(props.id)}
+          />
+          <h2 id={`${props.id}-title`} class="window-title">
+            {props.name} — iframe
+          </h2>
+        </header>
+        <div class="window-info">
+          <span>Own document, own copy of Solid</span>
+          <span class="host">{host()}</span>
+        </div>
+        <Show when={src()} fallback={<div class="window-body">Couldn't find where {props.name} was loaded from.</div>}>
+          {(url) => <iframe class="frame" src={url()} title={`${props.name}, loaded in an iframe`} />}
+        </Show>
+      </section>
+    </Slot>
+  );
+}
 
 /** First load only: both remote windows open with their contents on the way. */
 function Skeleton(props: { desktop: Desktop }) {

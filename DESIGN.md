@@ -229,7 +229,9 @@ The signature container: every bundle, the alert and the loading placeholders ar
 - **Status strip:** bottom, 2px rule above; counts and the data-source credit link.
 - **Holding:** see The Hold Rule.
 - **Active / inactive:** only the front window keeps its title-bar stripes and close box. Every other window's title bar is plain paper with the title alone. Pressing anywhere on a window brings it to the front.
-- **Drag:** on screens wider than 900px, a window is grabbed by its title bar (grab cursor). While dragging, the window stays put and a 2px dotted ink outline of it follows the pointer; on release the window jumps to the outline. At least 96px of the title bar stays on screen and it never rises above the menu bar. Under 900px there is no dragging.
+- **Drag:** on screens wider than 900px, a window is grabbed by its title bar (grab cursor) and follows the pointer live, landing where it is released. At least 96px of the title bar stays on screen and it never rises above the menu bar. Iframes go click-through during a drag so a window can be dragged across them. Under 900px there is no dragging.
+- **Close box:** decorative on the three app windows (hidden when inactive); a working button on windows that can be closed, and a working close box always stays visible and focusable, active or not.
+- **Iframe window:** opened from a desktop icon, titled "places — iframe" / "forecast — iframe", with an info strip reading "Own document, own copy of Solid" and the host the remote was federated from (read from Module Federation's runtime record). It frames that remote's own deployed page at 460px tall, 480px wide (at most 46% of the desk), cascading in from the top right. Under 900px it joins the stacked flow.
 
 ### Buttons
 - **Shape:** gently rounded (8px), 2px ink frame plus a 2px paper gap and 2px ink outer ring.
@@ -246,7 +248,7 @@ The signature container: every bundle, the alert and the loading placeholders ar
 ### Navigation
 - **Menu bar:** sticky, 40px, paper with a 2px ink bottom rule, Silkscreen 14px. Links have no underline and 4px × 8px padding; hover and focus invert the link to ink.
 - **Menu item (Clean Up):** a borderless button set like a menu link that puts every window back in its place and stacking order. Disabled until a window has moved, a disabled item is set in dithered ink (the 50% tile clipped to the text).
-- **Desk icons:** right-hand column of 48px pixel icons over paper-plated names (Pixelify 15px) that knock out the stipple; hover inverts the name plate, keyboard focus draws a dotted outline around the icon.
+- **Desk icons:** right-hand column of 48px pixel icons over paper-plated names (Pixelify 15px) that knock out the stipple; hover inverts the name plate, keyboard focus draws a dotted outline around the icon. Links (folder, document, disk) navigate; application icons (a small striped window) are buttons that open an iframe window. Under 900px the icons wrap in centered rows.
 - **Links in content:** inherit ink, 2px dotted underline at 4px offset, solid on hover.
 
 ### Hold Indicator

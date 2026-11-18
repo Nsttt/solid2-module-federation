@@ -16,7 +16,9 @@ Pick a new state and three things happen in three bundles: `places` fetches that
 
 ![Texas selected, the city select disabled, the previous forecast dimmed while the new one loads](docs/holding.png)
 
-The page is drawn as a one-bit desktop: each bundle is its own window, titled with its name and the host it actually loaded from. Drag any window by its title bar, old-desktop style (a dotted outline follows the pointer, the window jumps on release, and the front window keeps its stripes); *Clean Up* in the menu bar puts them back. The shell owns the desktop, so the remotes never know they can move. During a change both remote windows dim under a dither with marching ants and update together; the menu bar shows the hold and how many copies of Solid are running (in production, read from Module Federation's share record). The design system is recorded in [`DESIGN.md`](DESIGN.md) and the product context in [`PRODUCT.md`](PRODUCT.md).
+The page is drawn as a one-bit desktop: each bundle is its own window, titled with its name and the host it actually loaded from. Drag any window by its title bar (the front window keeps its stripes); *Clean Up* in the menu bar puts them back. The shell owns the desktop, so the remotes never know they can move.
+
+The *places iframe* and *forecast iframe* desktop icons open each remote's own deployed page in an iframe window, right next to its federated version. The iframe is the other way to compose: a separate document with its own copy of Solid, so changing its state touches nothing else on the page, while the federated windows share one graph. During a change both remote windows dim under a dither with marching ants and update together; the menu bar shows the hold and how many copies of Solid are running (in production, read from Module Federation's share record). The design system is recorded in [`DESIGN.md`](DESIGN.md) and the product context in [`PRODUCT.md`](PRODUCT.md).
 
 ## Run it
 
