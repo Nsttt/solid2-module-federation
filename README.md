@@ -33,7 +33,7 @@ pnpm typecheck
 
 ## Deploy
 
-Live: https://nestor-lopez-65237-shell-solid2-module-federation-d2113a077-ze.zephyrcloud.app/
+Live: https://t-web-latest-nestor-lopez-shell-solid2-module-federat-16ddf9-ze.zephyrcloud.app/ (Zephyr's latest tag, which follows each deploy)
 
 Each app deploys to [Zephyr Cloud](https://zephyr-cloud.io) through `zephyr-rsbuild-plugin`, which runs on `rsbuild build` only, so `pnpm dev` stays local.
 
