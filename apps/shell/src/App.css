@@ -9,7 +9,12 @@
 }
 
 .shell-body {
-  padding: clamp(20px, 3vw, 40px);
+  padding: clamp(20px, 3vw, 40px) clamp(20px, 3vw, 40px) 104px;
+}
+
+.drag-hint {
+  margin: 0;
+  font-size: 15px;
 }
 
 .menubar-status {
@@ -31,7 +36,7 @@
 
 .lede {
   max-width: 62ch;
-  margin: 0 0 40px;
+  margin: 0 0 14px;
   font-size: 20px;
 }
 
@@ -39,16 +44,76 @@
  * The two remote windows overlap like windows do: places sits lower and on
  * top, its right edge across the forecast window's frame.
  */
+/* The remote windows cascade up over the bottom of the shell window. */
 .remotes {
   display: grid;
   grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
   align-items: start;
-  padding-bottom: 12px;
+  margin: -72px 24px 0;
 }
 
 .slot {
   position: relative;
   min-width: 0;
+}
+
+/* ---------- Window manager ---------- */
+
+/* Only the front window keeps its stripes and close box, like the old desktop. */
+.desk [data-window]:not([data-active]) .window-bar {
+  background: var(--paper);
+}
+
+.desk [data-window]:not([data-active]) .window-close {
+  visibility: hidden;
+}
+
+.drag-outline {
+  position: fixed;
+  z-index: 100;
+  border: 2px dotted var(--ink);
+  pointer-events: none;
+}
+
+body.dragging,
+body.dragging * {
+  cursor: grabbing !important;
+  user-select: none;
+}
+
+@media (min-width: 901px) {
+  .desk [data-window] .window-bar {
+    cursor: grab;
+    touch-action: none;
+    user-select: none;
+  }
+}
+
+.menubar-item {
+  font: inherit;
+  color: inherit;
+  background: none;
+  border: 0;
+  padding: 4px 8px;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.menubar-item:hover:not(:disabled),
+.menubar-item:focus-visible {
+  background: var(--ink);
+  color: var(--paper);
+  outline: none;
+}
+
+/* A disabled menu item is set in dithered ink. */
+.menubar-item:disabled {
+  cursor: default;
+  color: transparent;
+  background: var(--dither-50);
+  background-size: 2px 2px;
+  -webkit-background-clip: text;
+  background-clip: text;
 }
 
 .slot-places {
@@ -169,6 +234,20 @@
   .remotes {
     grid-template-columns: minmax(0, 1fr);
     gap: 28px;
+    margin: 28px 0 0;
+  }
+
+  /* No dragging on narrow screens: the windows stack where they belong. */
+  .slot {
+    transform: none !important;
+  }
+
+  .shell-body {
+    padding-bottom: clamp(20px, 3vw, 40px);
+  }
+
+  .drag-hint {
+    display: none;
   }
 
   .slot-places {

@@ -1,48 +1,128 @@
 {
   "schemaVersion": 2,
   "generatedAt": "2026-11-18T00:00:00Z",
-  "title": "Design System: Solid 2.0 × Module Federation",
+  "title": "Design System: Solid 2.0 \u00d7 Module Federation",
   "extensions": {
     "colorMeta": {
       "ink": {
         "role": "primary",
         "displayName": "Ink",
         "canonical": "#000000",
-        "tonalRamp": ["#000000", "#000000", "#000000", "#000000", "#000000", "#000000", "#000000", "#000000"]
+        "tonalRamp": [
+          "#000000",
+          "#000000",
+          "#000000",
+          "#000000",
+          "#000000",
+          "#000000",
+          "#000000",
+          "#000000"
+        ]
       },
       "paper": {
         "role": "neutral",
         "displayName": "Paper",
         "canonical": "#ffffff",
-        "tonalRamp": ["#ffffff", "#ffffff", "#ffffff", "#ffffff", "#ffffff", "#ffffff", "#ffffff", "#ffffff"]
+        "tonalRamp": [
+          "#ffffff",
+          "#ffffff",
+          "#ffffff",
+          "#ffffff",
+          "#ffffff",
+          "#ffffff",
+          "#ffffff",
+          "#ffffff"
+        ]
       }
     },
     "typographyMeta": {
-      "display": { "displayName": "Display", "purpose": "The single page headline in the shell window; uppercase, balanced wrap." },
-      "headline": { "displayName": "Headline", "purpose": "Forecast city name; uppercase." },
-      "title": { "displayName": "Window Title", "purpose": "Window title bars; uppercase, one line, ellipsized; 13px under 560px." },
-      "body": { "displayName": "Body", "purpose": "Select values and window content; ligatures off." },
-      "body-strong": { "displayName": "Body Strong", "purpose": "Forecast day names and high temperatures." },
-      "lede": { "displayName": "Lede", "purpose": "The explanatory paragraph under the headline, max 62ch." },
-      "small": { "displayName": "Small", "purpose": "Info and status strips, hold indicator, desk-icon names." },
-      "label": { "displayName": "Label", "purpose": "Field labels and the Solid copy counter; uppercase." },
-      "menu": { "displayName": "Menu / Button", "purpose": "Menu bar links (400), wordmark and push buttons (700, uppercase)." },
-      "host": { "displayName": "Host", "purpose": "host:port readouts in info strips." }
+      "display": {
+        "displayName": "Display",
+        "purpose": "The single page headline in the shell window; uppercase, balanced wrap."
+      },
+      "headline": {
+        "displayName": "Headline",
+        "purpose": "Forecast city name; uppercase."
+      },
+      "title": {
+        "displayName": "Window Title",
+        "purpose": "Window title bars; uppercase, one line, ellipsized; 13px under 560px."
+      },
+      "body": {
+        "displayName": "Body",
+        "purpose": "Select values and window content; ligatures off."
+      },
+      "body-strong": {
+        "displayName": "Body Strong",
+        "purpose": "Forecast day names and high temperatures."
+      },
+      "lede": {
+        "displayName": "Lede",
+        "purpose": "The explanatory paragraph under the headline, max 62ch."
+      },
+      "small": {
+        "displayName": "Small",
+        "purpose": "Info and status strips, hold indicator, desk-icon names."
+      },
+      "label": {
+        "displayName": "Label",
+        "purpose": "Field labels and the Solid copy counter; uppercase."
+      },
+      "menu": {
+        "displayName": "Menu / Button",
+        "purpose": "Menu bar links (400), wordmark and push buttons (700, uppercase)."
+      },
+      "host": {
+        "displayName": "Host",
+        "purpose": "host:port readouts in info strips."
+      }
     },
     "shadows": [
-      { "name": "window-drop", "value": "6px 6px 0 #000", "purpose": "Solid ink slab behind every window (implemented as a ::before plate inset 6px -6px -6px 6px)." },
-      { "name": "control-lift", "value": "3px 3px 0 #000", "purpose": "Select at rest; removed when disabled." },
-      { "name": "default-ring", "value": "0 0 0 2px #fff, 0 0 0 4px #000", "purpose": "Push button's outer ring with a paper gap." },
-      { "name": "knockout", "value": "0 0 0 4px #fff", "purpose": "Clears title-bar stripes around the close box." }
+      {
+        "name": "window-drop",
+        "value": "6px 6px 0 #000",
+        "purpose": "Solid ink slab behind every window (implemented as a ::before plate inset 6px -6px -6px 6px)."
+      },
+      {
+        "name": "control-lift",
+        "value": "3px 3px 0 #000",
+        "purpose": "Select at rest; removed when disabled."
+      },
+      {
+        "name": "default-ring",
+        "value": "0 0 0 2px #fff, 0 0 0 4px #000",
+        "purpose": "Push button's outer ring with a paper gap."
+      },
+      {
+        "name": "knockout",
+        "value": "0 0 0 4px #fff",
+        "purpose": "Clears title-bar stripes around the close box."
+      }
     ],
     "motion": [
-      { "name": "marching-ants", "value": "0.6s steps(6) infinite", "purpose": "Dashed 6px/6px border 9px outside a holding window; static under prefers-reduced-motion. The system has no other animation or transition." }
+      {
+        "name": "marching-ants",
+        "value": "0.6s steps(6) infinite",
+        "purpose": "Dashed 6px/6px border 9px outside a holding window; static under prefers-reduced-motion. The system has no other animation or transition."
+      }
     ],
     "breakpoints": [
-      { "name": "desk-stack", "value": "900px" },
-      { "name": "phone", "value": "560px" },
-      { "name": "forecast-row", "value": "480px" },
-      { "name": "narrow", "value": "360px" }
+      {
+        "name": "desk-stack",
+        "value": "900px"
+      },
+      {
+        "name": "phone",
+        "value": "560px"
+      },
+      {
+        "name": "forecast-row",
+        "value": "480px"
+      },
+      {
+        "name": "narrow",
+        "value": "360px"
+      }
     ]
   },
   "components": [
@@ -51,7 +131,7 @@
       "kind": "card",
       "refersTo": "window",
       "description": "The signature container: one per bundle, with striped title bar, close box, info strip, body and status strip.",
-      "html": "<div class=\"ds-desk\"><section class=\"ds-window\"><header class=\"ds-window-bar\"><span class=\"ds-window-close\"></span><h2 class=\"ds-window-title\">places — remote</h2></header><div class=\"ds-window-strip\"><span>Exposes <code>./LocationPicker</code></span><span class=\"ds-host\">localhost:3001</span></div><div class=\"ds-window-body\">Window contents set in Pixelify Sans.</div><footer class=\"ds-window-strip ds-window-status\"><span>1123 places</span><a href=\"#\">Data: CountriesNow</a></footer></section></div>",
+      "html": "<div class=\"ds-desk\"><section class=\"ds-window\"><header class=\"ds-window-bar\"><span class=\"ds-window-close\"></span><h2 class=\"ds-window-title\">places \u2014 remote</h2></header><div class=\"ds-window-strip\"><span>Exposes <code>./LocationPicker</code></span><span class=\"ds-host\">localhost:3001</span></div><div class=\"ds-window-body\">Window contents set in Pixelify Sans.</div><footer class=\"ds-window-strip ds-window-status\"><span>1123 places</span><a href=\"#\">Data: CountriesNow</a></footer></section></div>",
       "css": ".ds-desk { padding: 24px 32px 32px 24px; background: #fff var(--dither-50) repeat; background-size: 2px 2px; image-rendering: pixelated; } .ds-window { position: relative; z-index: 0; background: #fff; border: 2px solid #000; color: #000; font: 400 18px/1.45 var(--body, 'Pixelify Sans', monospace); font-variant-ligatures: none; } .ds-window::before { content: ''; position: absolute; inset: 6px -6px -6px 6px; z-index: -1; background: #000; } .ds-window-bar { position: relative; display: flex; align-items: center; justify-content: center; height: 34px; padding: 7px 8px; border-bottom: 2px solid #000; background: repeating-linear-gradient(#fff 0 3px, #000 3px 5px) content-box; } .ds-window-close { position: absolute; left: 12px; top: 50%; width: 16px; height: 16px; margin-top: -8px; border: 2px solid #000; background: #fff; box-shadow: 0 0 0 4px #fff; } .ds-window-title { margin: 0; padding: 0 14px; background: #fff; font: 700 16px var(--display, 'Silkscreen', monospace); letter-spacing: 0.02em; text-transform: uppercase; white-space: nowrap; } .ds-window-strip { display: flex; justify-content: space-between; gap: 16px; padding: 6px 14px; border-bottom: 2px solid #000; font-size: 15px; } .ds-window-status { border-bottom: 0; border-top: 2px solid #000; } .ds-window-strip code, .ds-host { font-family: var(--display, 'Silkscreen', monospace); font-size: 12px; align-self: center; } .ds-window-strip a { color: inherit; text-decoration: underline dotted 2px; text-underline-offset: 4px; } .ds-window-strip a:hover { text-decoration-style: solid; } .ds-window-body { padding: 24px; }"
     },
     {
@@ -59,7 +139,7 @@
       "kind": "custom",
       "refersTo": "window-title-holding",
       "description": "A window waiting on async data: inverted title, 25% dither dim over the kept content, marching ants.",
-      "html": "<div class=\"ds-hold-wrap\"><section class=\"ds-hwindow\"><header class=\"ds-hwindow-bar\"><span class=\"ds-hwindow-close\"></span><h2 class=\"ds-hwindow-title\">forecast — remote</h2></header><div class=\"ds-hwindow-body\">San Francisco, previous forecast held.</div></section></div>",
+      "html": "<div class=\"ds-hold-wrap\"><section class=\"ds-hwindow\"><header class=\"ds-hwindow-bar\"><span class=\"ds-hwindow-close\"></span><h2 class=\"ds-hwindow-title\">forecast \u2014 remote</h2></header><div class=\"ds-hwindow-body\">San Francisco, previous forecast held.</div></section></div>",
       "css": ".ds-hold-wrap { padding: 20px; } .ds-hwindow { position: relative; z-index: 0; background: #fff; border: 2px solid #000; color: #000; font: 400 18px/1.45 var(--body, 'Pixelify Sans', monospace); } .ds-hwindow::before { content: ''; position: absolute; inset: 6px -6px -6px 6px; z-index: -1; background: #000; } .ds-hwindow::after { content: ''; position: absolute; inset: -9px; pointer-events: none; background: repeating-linear-gradient(90deg, #000 0 6px, transparent 6px 12px) 0 0 / 100% 2px no-repeat, repeating-linear-gradient(90deg, #000 0 6px, transparent 6px 12px) 0 100% / 100% 2px no-repeat, repeating-linear-gradient(0deg, #000 0 6px, transparent 6px 12px) 0 0 / 2px 100% no-repeat, repeating-linear-gradient(0deg, #000 0 6px, transparent 6px 12px) 100% 0 / 2px 100% no-repeat; animation: ds-ants 0.6s steps(6) infinite; } @keyframes ds-ants { to { background-position: 12px 0, -12px 100%, 0 -12px, 100% 12px; } } @media (prefers-reduced-motion: reduce) { .ds-hwindow::after { animation: none; } } .ds-hwindow-bar { position: relative; display: flex; align-items: center; justify-content: center; height: 34px; padding: 7px 8px; border-bottom: 2px solid #000; background: repeating-linear-gradient(#fff 0 3px, #000 3px 5px) content-box; } .ds-hwindow-close { position: absolute; left: 12px; top: 50%; width: 16px; height: 16px; margin-top: -8px; border: 2px solid #000; background: #fff; box-shadow: 0 0 0 4px #fff; } .ds-hwindow-title { margin: 0; padding: 0 14px; background: #000; color: #fff; font: 700 16px var(--display, 'Silkscreen', monospace); letter-spacing: 0.02em; text-transform: uppercase; } .ds-hwindow-body { position: relative; padding: 24px; } .ds-hwindow-body::after { content: ''; position: absolute; inset: 0; background: var(--dither-25); background-size: 2px 2px; image-rendering: pixelated; mix-blend-mode: multiply; pointer-events: none; }"
     },
     {
@@ -83,7 +163,7 @@
       "kind": "nav",
       "refersTo": "menubar",
       "description": "Sticky paper bar with the two-window mark, live hold status and inverting text links.",
-      "html": "<header class=\"ds-menubar\"><span class=\"ds-mark\"><svg width=\"32\" height=\"20\" viewBox=\"0 0 16 10\" shape-rendering=\"crispEdges\" aria-hidden=\"true\"><path d=\"M0 0h10v2H0zM0 2h1v5H0zM9 2h1v1H9zM6 3h10v2H6zM1 6h5v1H1zM6 5h1v5H6zM15 5h1v5h-1zM7 9h8v1H7z\"/></svg>Solid 2.0 × MF</span><span class=\"ds-spacer\"></span><a href=\"#\">Repository</a><a href=\"#\">Solid 2.0 post</a></header>",
+      "html": "<header class=\"ds-menubar\"><span class=\"ds-mark\"><svg width=\"32\" height=\"20\" viewBox=\"0 0 16 10\" shape-rendering=\"crispEdges\" aria-hidden=\"true\"><path d=\"M0 0h10v2H0zM0 2h1v5H0zM9 2h1v1H9zM6 3h10v2H6zM1 6h5v1H1zM6 5h1v5H6zM15 5h1v5h-1zM7 9h8v1H7z\"/></svg>Solid 2.0 \u00d7 MF</span><span class=\"ds-spacer\"></span><a href=\"#\">Repository</a><a href=\"#\">Solid 2.0 post</a></header>",
       "css": ".ds-menubar { display: flex; align-items: center; gap: 24px; height: 40px; padding: 0 24px; background: #fff; border-bottom: 2px solid #000; color: #000; font: 400 14px var(--display, 'Silkscreen', monospace); } .ds-mark { display: flex; align-items: center; gap: 10px; font-weight: 700; white-space: nowrap; } .ds-spacer { flex: 1; } .ds-menubar a { color: inherit; text-decoration: none; padding: 4px 8px; white-space: nowrap; } .ds-menubar a:hover, .ds-menubar a:focus-visible { background: #000; color: #fff; outline: none; }"
     },
     {
@@ -107,33 +187,65 @@
       "kind": "custom",
       "refersTo": "window",
       "description": "Day, 32px weather icon, sky text, tabular temps; dotted ink rules between rows.",
-      "html": "<ol class=\"ds-days\"><li><span class=\"ds-day\">Today</span><svg width=\"32\" height=\"32\" viewBox=\"0 0 16 16\" shape-rendering=\"crispEdges\" aria-hidden=\"true\"><path d=\"M5 2h6v1H5zM3 3h2v1H3zM11 3h2v1h-2zM2 4h1v2H2zM13 4h1v2h-1zM1 6h14v1H1zM3 9h1v1H3zM6 9h1v1H6zM9 9h1v1H9zM2 11h1v1H2zM5 11h1v1H5zM8 11h1v1H8z\"/></svg><span>Heavy rain</span><span class=\"ds-temp\"><strong>13°</strong> 10°</span></li><li><span class=\"ds-day\">Tomorrow</span><svg width=\"32\" height=\"32\" viewBox=\"0 0 16 16\" shape-rendering=\"crispEdges\" aria-hidden=\"true\"><path d=\"M5 2h6v1H5zM3 3h2v1H3zM11 3h2v1h-2zM2 4h1v2H2zM13 4h1v2h-1zM1 6h14v1H1zM4 10h1v1H4zM8 10h1v1H8z\"/></svg><span>Light rain</span><span class=\"ds-temp\"><strong>14°</strong> 10°</span></li></ol>",
+      "html": "<ol class=\"ds-days\"><li><span class=\"ds-day\">Today</span><svg width=\"32\" height=\"32\" viewBox=\"0 0 16 16\" shape-rendering=\"crispEdges\" aria-hidden=\"true\"><path d=\"M5 2h6v1H5zM3 3h2v1H3zM11 3h2v1h-2zM2 4h1v2H2zM13 4h1v2h-1zM1 6h14v1H1zM3 9h1v1H3zM6 9h1v1H6zM9 9h1v1H9zM2 11h1v1H2zM5 11h1v1H5zM8 11h1v1H8z\"/></svg><span>Heavy rain</span><span class=\"ds-temp\"><strong>13\u00b0</strong> 10\u00b0</span></li><li><span class=\"ds-day\">Tomorrow</span><svg width=\"32\" height=\"32\" viewBox=\"0 0 16 16\" shape-rendering=\"crispEdges\" aria-hidden=\"true\"><path d=\"M5 2h6v1H5zM3 3h2v1H3zM11 3h2v1h-2zM2 4h1v2H2zM13 4h1v2h-1zM1 6h14v1H1zM4 10h1v1H4zM8 10h1v1H8z\"/></svg><span>Light rain</span><span class=\"ds-temp\"><strong>14\u00b0</strong> 10\u00b0</span></li></ol>",
       "css": ".ds-days { list-style: none; margin: 0; padding: 0 12px; color: #000; font: 400 18px/1.45 var(--body, 'Pixelify Sans', monospace); font-variant-ligatures: none; } .ds-days li { display: grid; grid-template-columns: minmax(6.5rem, 1fr) 32px minmax(0, 1.6fr) auto; align-items: center; gap: 14px; padding: 9px 0; border-top: 2px dotted #000; } .ds-days li:first-child { border-top: 0; } .ds-day { font-weight: 600; } .ds-temp { text-align: right; white-space: nowrap; font-variant-numeric: tabular-nums; } .ds-temp strong { font-weight: 600; margin-right: 6px; }"
+    },
+    {
+      "name": "Inactive Window",
+      "kind": "card",
+      "refersTo": "window",
+      "description": "A window that is not in front: the title bar drops its stripes and close box, leaving the title alone on paper. Pressing anywhere on it brings it to the front; on wide screens its title bar is a drag handle.",
+      "html": "<div class=\"ds-desk\"><section class=\"ds-window\"><header class=\"ds-window-bar ds-window-bar-inactive\"><h2 class=\"ds-window-title\">forecast \u2014 remote</h2></header><div class=\"ds-window-body\">Behind the active window.</div></section></div>",
+      "css": ".ds-window-bar-inactive { background: #fff; }"
     }
   ],
   "narrative": {
     "northStar": "The One-Bit Desktop",
     "overview": "Federation drawn the way the early one-bit desktop always drew separate programs: as separate windows on one desktop. The shell is a wide host window; each remote bundle is its own window, titled with its bundle name and role, with a Finder-style info strip naming what it exposes and the host it loaded from. The bundle boundary is never described in prose alone; it is a window frame you can see.\n\nEverything is pure ink on pure paper. There are no greys, no tints, no anti-aliasing: every intermediate tone is an ordered dither tile rendered pixel for pixel, the desktop itself is a 50% stipple, and fonts render with smoothing off. State is shown the way that desktop showed it: pressing inverts, the active title inverts, disabled controls dim to dither, and a window that is waiting draws marching ants around itself while its body dims to a 25% dither. The density is calm and document-like inside windows, with real data set in a legible pixel body face.\n\nThe system is shared: `theme.css` at the repo root owns tokens, dithers, window chrome, controls and the hold state, and every app (host and both remotes, embedded or standalone) imports it. Remotes style only their own contents.",
     "keyCharacteristics": [
-      "Two colors only, ink #000 and paper #fff; tone comes from 2×2 ordered dither tiles.",
+      "Two colors only, ink #000 and paper #fff; tone comes from 2\u00d72 ordered dither tiles.",
       "Windows: 2px ink frame, striped title bar with close box and centered uppercase title, solid offset drop shadow.",
       "Silkscreen pixel capitals for chrome and display; Pixelify Sans for reading.",
       "State by inversion, dither and marching ants, never by color or fade.",
-      "Hand-drawn 16-pixel icon art rendered as crisp SVG rects at 2× or 3×."
+      "Hand-drawn 16-pixel icon art rendered as crisp SVG rects at 2\u00d7 or 3\u00d7."
     ],
     "rules": [
-      { "name": "The One-Bit Rule", "body": "Only #000 and #fff are ever painted. A grey, a tint, an opacity fade or a colored accent breaks the world; when an in-between tone is needed, use a dither tile at `background-size: 2px 2px` with `image-rendering: pixelated`.", "section": "colors" },
-      { "name": "The Inversion Rule", "body": "Emphasis and activity are expressed by swapping ink and paper on the element. Selection, hover in menus and icon labels, pressed buttons, the holding window title and the active hold indicator all invert; nothing gets a highlight color.", "section": "colors" },
-      { "name": "The No-Ligature Rule", "body": "`font-variant-ligatures: none` is set globally; Pixelify's fi ligature reads as an A. Every letter is set on its own.", "section": "typography" },
-      { "name": "The Two-Face Split Rule", "body": "Silkscreen is for chrome and names (titles, labels, menu, code, hosts, headline); Pixelify Sans is for anything a person reads as a sentence or a data row. Numbers in data use `tabular-nums`.", "section": "typography" },
-      { "name": "The Solid Slab Rule", "body": "Shadows are hard, unblurred ink offsets only. A blurred or translucent shadow cannot exist in one bit.", "section": "elevation" },
-      { "name": "The Hold Rule", "body": "A window waiting on async data does three things at once and nothing else: its title inverts, its body dims under a multiplied 25% dither, and dashed 6px-on/6px-off marching ants circle it 9px out, stepping in 6 steps over 0.6s. With reduced motion the ants stand still but stay drawn. The previous content stays fully visible under the dim.", "section": "elevation" }
+      {
+        "name": "The One-Bit Rule",
+        "body": "Only #000 and #fff are ever painted. A grey, a tint, an opacity fade or a colored accent breaks the world; when an in-between tone is needed, use a dither tile at `background-size: 2px 2px` with `image-rendering: pixelated`.",
+        "section": "colors"
+      },
+      {
+        "name": "The Inversion Rule",
+        "body": "Emphasis and activity are expressed by swapping ink and paper on the element. Selection, hover in menus and icon labels, pressed buttons, the holding window title and the active hold indicator all invert; nothing gets a highlight color.",
+        "section": "colors"
+      },
+      {
+        "name": "The No-Ligature Rule",
+        "body": "`font-variant-ligatures: none` is set globally; Pixelify's fi ligature reads as an A. Every letter is set on its own.",
+        "section": "typography"
+      },
+      {
+        "name": "The Two-Face Split Rule",
+        "body": "Silkscreen is for chrome and names (titles, labels, menu, code, hosts, headline); Pixelify Sans is for anything a person reads as a sentence or a data row. Numbers in data use `tabular-nums`.",
+        "section": "typography"
+      },
+      {
+        "name": "The Solid Slab Rule",
+        "body": "Shadows are hard, unblurred ink offsets only. A blurred or translucent shadow cannot exist in one bit.",
+        "section": "elevation"
+      },
+      {
+        "name": "The Hold Rule",
+        "body": "A window waiting on async data does three things at once and nothing else: its title inverts, its body dims under a multiplied 25% dither, and dashed 6px-on/6px-off marching ants circle it 9px out, stepping in 6 steps over 0.6s. With reduced motion the ants stand still but stay drawn. The previous content stays fully visible under the dim.",
+        "section": "elevation"
+      }
     ],
     "dos": [
-      "**Do** paint only #000 and #fff, and reach for the 25% or 50% dither tile (2×2, pixelated) whenever a tone between them is needed.",
+      "**Do** paint only #000 and #fff, and reach for the 25% or 50% dither tile (2\u00d72, pixelated) whenever a tone between them is needed.",
       "**Do** put every separately shipped bundle in its own window with the striped title bar, its bundle name and role in the title, and an info strip naming what it exposes and where it loaded from.",
       "**Do** show state by inversion, dither dimming and marching ants, applied to whole windows at once.",
-      "**Do** draw icons as 16-pixel art rendered through the pixel icon renderer at 2× or 3× with `crispEdges`.",
+      "**Do** draw icons as 16-pixel art rendered through the pixel icon renderer at 2\u00d7 or 3\u00d7 with `crispEdges`.",
       "**Do** keep Silkscreen for chrome and names and Pixelify Sans for sentences and data rows, with ligatures off.",
       "**Do** keep the ants static but visible under `prefers-reduced-motion`."
     ],

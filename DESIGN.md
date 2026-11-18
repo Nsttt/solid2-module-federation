@@ -194,11 +194,11 @@ A strict one-bit palette: two values, with ordered dithers standing in for every
 
 The page is a desktop: a sticky 40px menu bar across the top (wordmark with the two-window mark left, live hold and Solid status right, then text links), and below it a desk grid of one flexible column plus a 128px icon column, max 1360px, padded by the fluid gutter (clamp(16px, 3vw, 40px)) with a 32px column gap.
 
-The shell window holds the headline, lede and the two remote windows. Remotes sit in a 5fr/7fr grid and overlap like real windows: the places window drops 56px lower and pushes 44px across the forecast window's left frame, sitting on top; the forecast window pads its contents left by 64px to stay clear. Overlap order is carried by wrapper slots so the windows themselves never become stacking contexts.
+The three windows are siblings on the desk. The shell window holds the headline and lede and leaves a 104px empty foot; the two remote windows cascade 72px up over it, inset 24px. Remotes sit in a 5fr/7fr grid and overlap like real windows: the places window drops 56px lower and pushes 44px across the forecast window's left frame; the forecast window pads its contents left by 64px to stay clear. Every window lives in a wrapper slot that carries its position, stacking order and active state, so the windows themselves never become stacking contexts.
 
 Spacing inside windows is quiet: info and status strips are 6px × 14px, window bodies clamp(16px, 2vw, 24px) (the shell body clamp(20px, 3vw, 40px)), fields stack 18px apart. Forecast days are a four-column grid (day, 32px icon, sky, temps) separated by 2px dotted ink rules.
 
-Responsive behavior: at 900px the desk drops to one column, the remotes stack with a 28px gap and no overlap, the desk icons become a centered row under the shell, and the secondary menu link hides. At 560px the menu bar wraps, the wordmark shortens, and the status becomes its own full-bleed strip under a 2px rule. At 480px each forecast row becomes icon / day over sky / temps. At 360px gaps and icon widths tighten further. Standalone remote pages center a single window in 760px.
+Responsive behavior: at 900px the desk drops to one column, dragging turns off and any moved window snaps back to its place, the remotes stack with a 28px gap and no overlap, the desk icons become a centered row under the shell, and the secondary menu link hides. At 560px the menu bar wraps, the wordmark shortens, and the status becomes its own full-bleed strip under a 2px rule. At 480px each forecast row becomes icon / day over sky / temps. At 360px gaps and icon widths tighten further. Standalone remote pages center a single window in 760px.
 
 ## Elevation & Depth
 
@@ -228,6 +228,8 @@ The signature container: every bundle, the alert and the loading placeholders ar
 - **Info strip:** below the title bar, a 2px rule beneath; left says what the bundle exposes (with `code`), right gives the host:port in Silkscreen 12px.
 - **Status strip:** bottom, 2px rule above; counts and the data-source credit link.
 - **Holding:** see The Hold Rule.
+- **Active / inactive:** only the front window keeps its title-bar stripes and close box. Every other window's title bar is plain paper with the title alone. Pressing anywhere on a window brings it to the front.
+- **Drag:** on screens wider than 900px, a window is grabbed by its title bar (grab cursor). While dragging, the window stays put and a 2px dotted ink outline of it follows the pointer; on release the window jumps to the outline. At least 96px of the title bar stays on screen and it never rises above the menu bar. Under 900px there is no dragging.
 
 ### Buttons
 - **Shape:** gently rounded (8px), 2px ink frame plus a 2px paper gap and 2px ink outer ring.
@@ -243,6 +245,7 @@ The signature container: every bundle, the alert and the loading placeholders ar
 
 ### Navigation
 - **Menu bar:** sticky, 40px, paper with a 2px ink bottom rule, Silkscreen 14px. Links have no underline and 4px × 8px padding; hover and focus invert the link to ink.
+- **Menu item (Clean Up):** a borderless button set like a menu link that puts every window back in its place and stacking order. Disabled until a window has moved, a disabled item is set in dithered ink (the 50% tile clipped to the text).
 - **Desk icons:** right-hand column of 48px pixel icons over paper-plated names (Pixelify 15px) that knock out the stipple; hover inverts the name plate, keyboard focus draws a dotted outline around the icon.
 - **Links in content:** inherit ink, 2px dotted underline at 4px offset, solid on hover.
 
@@ -261,6 +264,7 @@ Day name (Pixelify 600), 32px composed weather icon, sky text, then tabular temp
 - **Do** draw icons as 16-pixel art rendered through the pixel icon renderer at 2× or 3× with `crispEdges`.
 - **Do** keep Silkscreen for chrome and names and Pixelify Sans for sentences and data rows, with ligatures off.
 - **Do** keep the ants static but visible under `prefers-reduced-motion`.
+- **Do** let the host own the desktop: positions, stacking and dragging live in the shell's slots, and the remotes never know they can move.
 
 ### Don't:
 - **Don't** introduce greys, tints, opacity fades, smooth gradients (hard-stop stripes and dashes only), or any color.
