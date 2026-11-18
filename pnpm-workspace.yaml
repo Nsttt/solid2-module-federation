@@ -1,0 +1,5 @@
+packages:
+  - apps/*
+minimumReleaseAgeExclude:
+  - '@rsbuild/core@2.3.3'
+  - '@rsbuild/plugin-solid@2.0.0'

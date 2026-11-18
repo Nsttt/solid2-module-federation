@@ -1,0 +1,22 @@
+{
+  "name": "shell",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "rsbuild dev",
+    "build": "rsbuild build",
+    "preview": "rsbuild preview",
+    "typecheck": "tsc -p tsconfig.json"
+  },
+  "dependencies": {
+    "@solidjs/signals": "^2.0.0",
+    "@solidjs/web": "^2.0.0",
+    "solid-js": "^2.0.0"
+  },
+  "devDependencies": {
+    "@module-federation/rsbuild-plugin": "^2.9.3",
+    "@rsbuild/core": "^2.3.3",
+    "@rsbuild/plugin-solid": "^2.0.0",
+    "typescript": "^5.9.3"
+  }
+}
