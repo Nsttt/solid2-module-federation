@@ -202,11 +202,11 @@ button.window-close:active {
 }
 
 .md-heading {
-  margin: 28px 0 10px;
-  font-family: var(--display);
-  font-size: 16px;
+  margin: 32px 0 10px;
+  font-family: var(--body);
+  font-size: 21px;
   font-weight: 700;
-  text-transform: uppercase;
+  line-height: 1.3;
 }
 
 .md-code {
@@ -215,8 +215,7 @@ button.window-close:active {
   border: var(--frame) solid var(--ink);
   box-shadow: 3px 3px 0 var(--ink);
   overflow-x: auto;
-  font: 13px/1.5 ui-monospace, 'SF Mono', Menlo, monospace;
-  -webkit-font-smoothing: auto;
+  font: 14px/1.55 var(--mono);
 }
 
 .md-code code {
@@ -225,7 +224,6 @@ button.window-close:active {
 
 .post-scroll p code,
 .post-scroll .md-quote code {
-  font-family: ui-monospace, 'SF Mono', Menlo, monospace;
   font-size: 0.85em;
   padding: 0 3px;
   border: 1px solid var(--ink);
@@ -355,9 +353,10 @@ button.desk-icon {
 
 .copies {
   white-space: nowrap;
-  font-family: var(--display);
-  font-size: 13px;
+  font-family: var(--body);
+  font-size: 14px;
   font-weight: 700;
+  letter-spacing: 0.04em;
   text-transform: uppercase;
 }
 
@@ -551,6 +550,7 @@ button.desk-icon {
 
 @media (max-width: 360px) {
   .copies {
-    font-size: 11px;
+    font-size: 13px;
+    letter-spacing: 0;
   }
 }

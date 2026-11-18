@@ -3,17 +3,19 @@
  * whole page, each remote for its standalone page. Remotes style their own
  * contents; the window chrome, type and controls are the shared system.
  */
-@import '@fontsource/silkscreen/400.css';
+/* Pixel capitals for display sizes only; everything people read is set in Atkinson Hyperlegible. */
 @import '@fontsource/silkscreen/700.css';
-@import '@fontsource/pixelify-sans/400.css';
-@import '@fontsource/pixelify-sans/600.css';
+@import '@fontsource/atkinson-hyperlegible-next/400.css';
+@import '@fontsource/atkinson-hyperlegible-next/700.css';
+@import '@fontsource/atkinson-hyperlegible-mono/400.css';
 
 :root {
   color-scheme: light;
   --ink: #000;
   --paper: #fff;
-  --display: 'Silkscreen', 'Pixelify Sans', monospace;
-  --body: 'Pixelify Sans', 'Silkscreen', monospace;
+  --display: 'Silkscreen', 'Atkinson Hyperlegible Next', sans-serif;
+  --body: 'Atkinson Hyperlegible Next', system-ui, sans-serif;
+  --mono: 'Atkinson Hyperlegible Mono', ui-monospace, monospace;
 
   /* Ordered dithers standing in for every grey. Each is one tile, drawn
      pixel for pixel and kept crisp by image-rendering below. */
@@ -26,10 +28,8 @@
   --gutter: clamp(16px, 3vw, 40px);
   font-family: var(--body);
   font-size: 18px;
-  line-height: 1.45;
+  line-height: 1.5;
   color: var(--ink);
-  /* Pixelify's fi ligature reads as an A; set every letter on its own. */
-  font-variant-ligatures: none;
 }
 
 * {
@@ -47,7 +47,6 @@ body {
   background-size: 2px 2px;
   image-rendering: pixelated;
   caret-color: var(--ink);
-  -webkit-font-smoothing: none;
 }
 
 ::selection {
@@ -72,8 +71,8 @@ a:hover {
 }
 
 code {
-  font-family: var(--display);
-  font-size: 0.8em;
+  font-family: var(--mono);
+  font-size: 0.9em;
 }
 
 .tabular {
@@ -93,8 +92,8 @@ code {
   padding: 0 var(--gutter);
   background: var(--paper);
   border-bottom: var(--frame) solid var(--ink);
-  font-family: var(--display);
-  font-size: 14px;
+  font-family: var(--body);
+  font-size: 15px;
 }
 
 .menubar-mark {
@@ -167,10 +166,10 @@ code {
   margin: 0;
   padding: 0 14px;
   background: var(--paper);
-  font-family: var(--display);
-  font-size: 16px;
+  font-family: var(--body);
+  font-size: 15px;
   font-weight: 700;
-  letter-spacing: 0.02em;
+  letter-spacing: 0.06em;
   text-transform: uppercase;
   white-space: nowrap;
   overflow: hidden;
@@ -190,8 +189,8 @@ code {
 }
 
 .window-info .host {
-  font-family: var(--display);
-  font-size: 12px;
+  font-family: var(--mono);
+  font-size: 13px;
   align-self: center;
   overflow-wrap: anywhere;
 }
@@ -263,9 +262,10 @@ code {
 .field {
   display: grid;
   gap: 6px;
-  font-family: var(--display);
-  font-size: 13px;
+  font-family: var(--body);
+  font-size: 14px;
   font-weight: 700;
+  letter-spacing: 0.06em;
   text-transform: uppercase;
 }
 
@@ -302,7 +302,8 @@ code {
 }
 
 .button {
-  font: 700 14px var(--display);
+  font: 700 15px var(--body);
+  letter-spacing: 0.04em;
   text-transform: uppercase;
   color: var(--ink);
   background: var(--paper);
