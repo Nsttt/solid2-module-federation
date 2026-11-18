@@ -26,9 +26,21 @@ pnpm dev          # shell on :3000, places on :3001, forecast on :3002
 Open http://localhost:3000. Each remote also runs standalone on its own port.
 
 ```bash
-pnpm build && pnpm preview   # same thing, production builds
 pnpm typecheck
 ```
+
+## Deploy
+
+Live: https://nestor-lopez-65237-shell-solid2-module-federation-d2113a077-ze.zephyrcloud.app/
+
+Each app deploys to [Zephyr Cloud](https://zephyr-cloud.io) through `zephyr-rsbuild-plugin`, which runs on `rsbuild build` only, so `pnpm dev` stays local.
+
+```bash
+pnpm build                         # deploys places, then forecast, then shell
+ZE_DISABLED=true pnpm build && pnpm preview   # local production build, no deploy
+```
+
+The remotes build first. The shell's `zephyr:dependencies` (`places` and `forecast`, both `workspace:*`) tells Zephyr to replace the `localhost` remote URLs in its config with the remotes' published versions at build time.
 
 ## The shared config
 

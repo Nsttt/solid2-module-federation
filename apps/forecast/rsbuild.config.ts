@@ -1,8 +1,9 @@
 import { pluginModuleFederation } from '@module-federation/rsbuild-plugin';
 import { defineConfig } from '@rsbuild/core';
 import { pluginSolid } from '@rsbuild/plugin-solid';
+import { withZephyr } from 'zephyr-rsbuild-plugin';
 
-export default defineConfig({
+export default defineConfig(({ command }) => ({
   plugins: [
     pluginSolid(),
     pluginModuleFederation({
@@ -18,6 +19,8 @@ export default defineConfig({
       },
       dts: false,
     }),
+    // Deploys to Zephyr Cloud on `rsbuild build`; dev stays local.
+    command === 'build' && withZephyr(),
   ],
   server: {
     port: 3002,
@@ -29,4 +32,4 @@ export default defineConfig({
   dev: { assetPrefix: 'auto' },
   output: { assetPrefix: 'auto' },
   html: { title: 'forecast (remote)' },
-});
+}));

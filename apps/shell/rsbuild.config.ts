@@ -1,11 +1,12 @@
 import { pluginModuleFederation } from '@module-federation/rsbuild-plugin';
 import { defineConfig } from '@rsbuild/core';
 import { pluginSolid } from '@rsbuild/plugin-solid';
+import { withZephyr } from 'zephyr-rsbuild-plugin';
 
 const PLACES_URL = process.env.PLACES_URL ?? 'http://localhost:3001';
 const FORECAST_URL = process.env.FORECAST_URL ?? 'http://localhost:3002';
 
-export default defineConfig({
+export default defineConfig(({ command }) => ({
   plugins: [
     pluginSolid(),
     pluginModuleFederation({
@@ -24,6 +25,8 @@ export default defineConfig({
       },
       dts: false,
     }),
+    // Deploys to Zephyr Cloud on `rsbuild build`; dev stays local.
+    command === 'build' && withZephyr(),
   ],
   server: {
     port: 3000,
@@ -31,4 +34,4 @@ export default defineConfig({
     cors: { origin: ['http://localhost:3000', 'http://localhost:3001', 'http://localhost:3002'] },
   },
   html: { title: 'Solid 2.0 × Module Federation' },
-});
+}));
