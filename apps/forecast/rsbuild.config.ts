@@ -1,11 +1,7 @@
 import { pluginModuleFederation } from '@module-federation/rsbuild-plugin';
 import { defineConfig } from '@rsbuild/core';
 import { pluginSolid } from '@rsbuild/plugin-solid';
-import { localCors, sharedSolid, unshared } from '../../mf.shared';
-
-if (unshared) {
-  console.warn('[forecast] MF_UNSHARED=1: bundling a private copy of Solid. This is the broken setup.');
-}
+import { localCors, sharedSolid } from '../../mf.shared';
 
 export default defineConfig({
   plugins: [
@@ -15,7 +11,7 @@ export default defineConfig({
       exposes: {
         './Forecast': './src/Forecast.tsx',
       },
-      shared: unshared ? {} : sharedSolid,
+      shared: sharedSolid,
       dts: false,
     }),
   ],

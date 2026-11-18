@@ -5,7 +5,6 @@
   "description": "Solid 2.0's async reactive graph running across three independently built Module Federation bundles.",
   "scripts": {
     "dev": "pnpm --filter \"./apps/*\" --parallel dev",
-    "dev:unshared": "MF_UNSHARED=1 pnpm dev",
     "build": "pnpm --filter \"./apps/*\" build",
     "preview": "pnpm --filter \"./apps/*\" --parallel preview",
     "typecheck": "pnpm --filter \"./apps/*\" typecheck"

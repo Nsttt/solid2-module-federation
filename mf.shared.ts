@@ -29,10 +29,3 @@ export const sharedSolid = {
 export const localCors = {
   origin: ['http://localhost:3000', 'http://localhost:3001', 'http://localhost:3002'],
 };
-
-/**
- * `pnpm dev:unshared` sets MF_UNSHARED=1, which makes the `forecast` remote
- * bundle its own private copy of Solid. That is the misconfiguration this repo
- * exists to demonstrate; see README.md.
- */
-export const unshared = process.env.MF_UNSHARED === '1';
