@@ -1,10 +1,10 @@
-import { createMemo, Errored, isPending, lazy, Loading, Show, type ParentComponent } from 'solid-js';
+import { createMemo, Errored, For, isPending, lazy, Loading, Show, type ParentComponent } from 'solid-js';
 import { Portal } from '@solidjs/web';
 import { createLocation, LocationContext } from 'places/location';
 import { createDesktop, type Desktop, type FrameId, type WindowId } from './desktop';
 import { GraphStatus } from './GraphStatus';
 import { bundleHost } from './origin';
-import { ALERT, APP, CHECK, DISK, DOCUMENT, FOLDER, HOURGLASS, MARK, PixelIcon } from './pixel';
+import { ALERT, APP, CHECK, DISK, DOCUMENT, FOLDER, FRAME, HOURGLASS, MARK, PixelIcon } from './pixel';
 import { remoteBase } from './remote-base';
 import './App.css';
 
@@ -16,6 +16,15 @@ const REPO = 'https://github.com/Nsttt/solid2-module-federation';
 const RELEASE_POST = 'https://www.solidjs.com/blog/solid-2-0-the-long-hold/';
 
 const errorMessage = (error: unknown) => (error instanceof Error ? error.message : String(error));
+
+/** Every window on the desktop, in the order its icon appears. */
+const WINDOWS: { id: WindowId; label: string; icon: readonly string[] }[] = [
+  { id: 'shell', label: 'shell', icon: APP },
+  { id: 'places', label: 'places', icon: APP },
+  { id: 'forecast', label: 'forecast', icon: APP },
+  { id: 'places-frame', label: 'places iframe', icon: FRAME },
+  { id: 'forecast-frame', label: 'forecast iframe', icon: FRAME },
+];
 
 export default function App() {
   // Reactive state whose code lives in the `places` remote, created here, in
@@ -143,14 +152,20 @@ export default function App() {
         </div>
 
         <nav class="desk-icons" aria-label="Desktop">
-          <button type="button" class="desk-icon" onClick={() => desktop.open('places-frame')}>
-            <PixelIcon art={APP} scale={3} />
-            <span>places iframe</span>
-          </button>
-          <button type="button" class="desk-icon" onClick={() => desktop.open('forecast-frame')}>
-            <PixelIcon art={APP} scale={3} />
-            <span>forecast iframe</span>
-          </button>
+          {/* One icon per window: opens it, or brings it to the front. An open window's icon is dithered. */}
+          <For each={WINDOWS}>
+            {(win) => (
+              <button
+                type="button"
+                class={['desk-icon', { 'is-open': desktop.isOpen(win.id) }]}
+                aria-label={`Open the ${win.label} window`}
+                onClick={() => desktop.open(win.id)}
+              >
+                <PixelIcon art={win.icon} scale={3} />
+                <span>{win.label}</span>
+              </button>
+            )}
+          </For>
           <a class="desk-icon" href={REPO}>
             <PixelIcon art={FOLDER} scale={3} />
             <span>Repository</span>
@@ -180,12 +195,27 @@ const Slot: ParentComponent<{ id: WindowId; desktop: Desktop }> = (props) => (
     class={['slot', `slot-${props.id}`]}
     data-window={props.id}
     data-active={props.desktop.isActive(props.id) ? 'true' : undefined}
+    // Closed windows hide rather than unmount, so their state and data live on.
+    data-closed={props.desktop.isOpen(props.id) ? undefined : ''}
     style={{
       transform: `translate(${props.desktop.offset(props.id).x}px, ${props.desktop.offset(props.id).y}px)`,
       'z-index': props.desktop.zIndex(props.id),
     }}
   >
     {props.children}
+    {/*
+      The host's own close box, laid exactly over the window's drawn one. It
+      works the same on the shell's window and on the remotes' windows, which
+      never know they can be closed. Iframe windows carry their own.
+    */}
+    <Show when={!props.id.endsWith('-frame')}>
+      <button
+        type="button"
+        class="window-close host-close"
+        aria-label={`Close the ${props.id} window`}
+        onClick={() => props.desktop.close(props.id)}
+      />
+    </Show>
   </div>
 );
 

@@ -105,6 +105,27 @@ button.window-close {
   cursor: pointer;
 }
 
+/* The host's close box sits exactly over the window's drawn one: 2px frame + 12px in, centered in the 34px bar. */
+.host-close {
+  position: absolute;
+  left: 14px;
+  top: 10px;
+  margin-top: 0;
+  z-index: 2;
+}
+
+/* A closed window keeps its footprint, so closing one never moves the others. */
+[data-closed] {
+  visibility: hidden;
+  pointer-events: none;
+}
+
+/* An open window's icon is dithered, like an opened item on the old desktop. */
+.desk-icon.is-open .pixel-icon {
+  -webkit-mask: var(--dither-50) 0 0 / 2px 2px;
+  mask: var(--dither-50) 0 0 / 2px 2px;
+}
+
 button.window-close:active {
   background: var(--ink);
 }
@@ -244,7 +265,7 @@ button.desk-icon {
 
 .desk-icons {
   display: grid;
-  gap: 28px;
+  gap: 18px;
   justify-items: center;
   padding-top: 8px;
 }
@@ -294,6 +315,11 @@ button.desk-icon {
   /* No dragging on narrow screens: the windows stack where they belong. */
   .slot {
     transform: none !important;
+  }
+
+  /* Stacked, a closed window would leave a gap; there it collapses instead. */
+  [data-closed] {
+    display: none;
   }
 
   .shell-body {

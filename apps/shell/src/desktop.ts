@@ -13,7 +13,7 @@ const WIDE = '(min-width: 901px)';
 
 /**
  * The shell is the host, so it owns the desktop: where each window sits, which
- * one is in front, which optional windows are open, and the drag. The remotes
+ * one is in front, which windows are open, and the drag. The remotes
  * render their windows as usual and never know they can be moved.
  */
 export function createDesktop() {
@@ -71,10 +71,11 @@ export function createDesktop() {
     window.addEventListener('pointercancel', end);
   };
 
-  /** Open an optional window (or bring it forward if it is already open). */
-  const open = (id: FrameId) => raise(id);
+  /** Open a window, or bring it to the front if it is already open. */
+  const open = (id: WindowId) => raise(id);
 
-  const close = (id: FrameId) =>
+  /** Close a window. Federated windows only hide (their state lives on); iframes unmount. */
+  const close = (id: WindowId) =>
     setState((s) => {
       s.order = s.order.filter((other) => other !== id);
       s.offset[id] = { x: 0, y: 0 };
