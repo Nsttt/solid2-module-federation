@@ -1,168 +1,341 @@
-:root {
-  color-scheme: light dark;
-  --bg: #f6f5f1;
-  --surface: #ffffff;
-  --field: #ffffff;
-  --ink: #1d1c1a;
-  --muted: #6b6760;
-  --line: #e3e0d8;
-  --accent: #2c4f9e;
-  --warn: #b4441f;
-  --ok: #2f7a4b;
-  font-family: ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
-  line-height: 1.5;
-}
+/*
+ * One-bit desktop. Every app in the repo imports this file: the shell for the
+ * whole page, each remote for its standalone page. Remotes style their own
+ * contents; the window chrome, type and controls are the shared system.
+ */
+@import '@fontsource/silkscreen/400.css';
+@import '@fontsource/silkscreen/700.css';
+@import '@fontsource/pixelify-sans/400.css';
+@import '@fontsource/pixelify-sans/600.css';
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --bg: #151515;
-    --surface: #1e1e1d;
-    --field: #262625;
-    --ink: #ecebe7;
-    --muted: #a19d95;
-    --line: #34332f;
-    --accent: #8eaaf0;
-    --warn: #f0906b;
-    --ok: #78c595;
-  }
+:root {
+  color-scheme: light;
+  --ink: #000;
+  --paper: #fff;
+  --display: 'Silkscreen', 'Pixelify Sans', monospace;
+  --body: 'Pixelify Sans', 'Silkscreen', monospace;
+
+  /* Ordered dithers standing in for every grey. Each is one tile, drawn
+     pixel for pixel and kept crisp by image-rendering below. */
+  --dither-25: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='2' height='2' shape-rendering='crispEdges'%3E%3Crect width='2' height='2' fill='%23fff'/%3E%3Crect width='1' height='1' fill='%23000'/%3E%3C/svg%3E");
+  --dither-50: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='2' height='2' shape-rendering='crispEdges'%3E%3Crect width='2' height='2' fill='%23fff'/%3E%3Crect width='1' height='1' fill='%23000'/%3E%3Crect x='1' y='1' width='1' height='1' fill='%23000'/%3E%3C/svg%3E");
+  --chevron: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='8' shape-rendering='crispEdges'%3E%3Cpath fill='%23000' d='M0 0h14v2H0zM2 2h10v2H2zM4 4h6v2H4zM6 6h2v2H6z'/%3E%3C/svg%3E");
+
+  --bar: 34px;
+  --frame: 2px;
+  --gutter: clamp(16px, 3vw, 40px);
+  font-family: var(--body);
+  font-size: 18px;
+  line-height: 1.45;
+  color: var(--ink);
+  /* Pixelify's fi ligature reads as an A; set every letter on its own. */
+  font-variant-ligatures: none;
 }
 
 * {
   box-sizing: border-box;
 }
 
+html {
+  scrollbar-color: var(--ink) var(--paper);
+}
+
 body {
   margin: 0;
-  background: var(--bg);
-  color: var(--ink);
+  min-height: 100vh;
+  background: var(--paper) var(--dither-50) repeat;
+  background-size: 2px 2px;
+  image-rendering: pixelated;
+  caret-color: var(--ink);
+  -webkit-font-smoothing: none;
+}
+
+::selection {
+  background: var(--ink);
+  color: var(--paper);
+}
+
+a {
+  color: inherit;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 4px;
+  text-decoration-style: dotted;
+}
+
+a:hover {
+  text-decoration-style: solid;
+}
+
+:focus-visible {
+  outline: 2px dotted var(--ink);
+  outline-offset: 3px;
 }
 
 code {
-  font-family: ui-monospace, 'SF Mono', Menlo, monospace;
-  font-size: 0.9em;
+  font-family: var(--display);
+  font-size: 0.8em;
 }
 
-.shell,
-.standalone {
-  max-width: 920px;
-  margin: 0 auto;
-  padding: 3rem 1rem 4rem;
+.tabular {
+  font-variant-numeric: tabular-nums;
 }
 
-.masthead {
-  margin-bottom: 2rem;
-}
+/* ---------- Menu bar ---------- */
 
-.eyebrow {
-  margin: 0;
-  font-size: 0.75rem;
-  font-weight: 600;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--muted);
-}
-
-.masthead h1 {
-  margin: 0.25rem 0 0.75rem;
-  font-size: clamp(1.8rem, 4vw, 2.6rem);
-  line-height: 1.1;
-  letter-spacing: -0.02em;
-}
-
-.lede {
-  max-width: 60ch;
-  margin: 0;
-  color: var(--muted);
-}
-
-.grid {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1.4fr);
-  gap: 1rem;
-}
-
-@media (max-width: 680px) {
-  .grid {
-    grid-template-columns: 1fr;
-  }
-}
-
-.panel {
-  background: var(--surface);
-  border: 1px solid var(--line);
-  border-radius: 12px;
-  padding: 1.25rem;
-}
-
-.panel-head {
+.menubar {
+  position: sticky;
+  top: 0;
+  z-index: 10;
   display: flex;
-  justify-content: space-between;
-  align-items: baseline;
-  gap: 1rem;
-  margin-bottom: 1rem;
+  align-items: center;
+  gap: clamp(14px, 2.5vw, 32px);
+  height: 40px;
+  padding: 0 var(--gutter);
+  background: var(--paper);
+  border-bottom: var(--frame) solid var(--ink);
+  font-family: var(--display);
+  font-size: 14px;
 }
 
-.panel-head h2 {
-  margin: 0;
-  font-size: 1.1rem;
-}
-
-.origin {
-  font-family: ui-monospace, 'SF Mono', Menlo, monospace;
-  font-size: 0.72rem;
-  color: var(--accent);
+.menubar-mark {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 700;
   white-space: nowrap;
 }
 
-.skeleton {
-  min-height: 15rem;
-  background: linear-gradient(90deg, var(--surface), var(--line), var(--surface));
-  background-size: 200% 100%;
-  animation: shimmer 1.4s linear infinite;
+.menubar a {
+  text-decoration: none;
+  padding: 4px 8px;
+  white-space: nowrap;
 }
 
-@keyframes shimmer {
+.menubar a:hover,
+.menubar a:focus-visible {
+  background: var(--ink);
+  color: var(--paper);
+  outline: none;
+}
+
+.menubar-spacer {
+  flex: 1;
+}
+
+/* ---------- Windows ---------- */
+
+.window {
+  position: relative;
+  background: var(--paper);
+  border: var(--frame) solid var(--ink);
+  min-width: 0;
+}
+
+/* A solid, offset drop shadow: the one depth cue the desktop had. */
+.window::before {
+  content: '';
+  position: absolute;
+  inset: 6px -6px -6px 6px;
+  z-index: -1;
+  background: var(--ink);
+}
+
+.window-bar {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: var(--bar);
+  border-bottom: var(--frame) solid var(--ink);
+  background: repeating-linear-gradient(var(--paper) 0 3px, var(--ink) 3px 5px) content-box;
+  padding: 7px 8px;
+}
+
+.window-close {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  width: 16px;
+  height: 16px;
+  margin-top: -8px;
+  border: var(--frame) solid var(--ink);
+  background: var(--paper);
+  box-shadow: 0 0 0 4px var(--paper);
+}
+
+.window-title {
+  margin: 0;
+  padding: 0 14px;
+  background: var(--paper);
+  font-family: var(--display);
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: calc(100% - 60px);
+}
+
+/* Finder-style info strip: what this bundle is, and where it loaded from. */
+.window-info {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+  padding: 6px 14px;
+  border-bottom: var(--frame) solid var(--ink);
+  font-size: 15px;
+}
+
+.window-info .host {
+  font-family: var(--display);
+  font-size: 12px;
+  align-self: center;
+  overflow-wrap: anywhere;
+}
+
+.window-body {
+  padding: clamp(16px, 2vw, 24px);
+}
+
+.window-status {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+  padding: 6px 14px;
+  border-top: var(--frame) solid var(--ink);
+  font-size: 15px;
+}
+
+/* ---------- The hold: marching ants and a dithered dim ---------- */
+
+.window.holding > .window-body {
+  position: relative;
+}
+
+/* The holding window shows as active: its title inverts. */
+.window.holding .window-title {
+  background: var(--ink);
+  color: var(--paper);
+}
+
+.window.holding > .window-body::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--dither-25);
+  background-size: 2px 2px;
+  mix-blend-mode: multiply;
+  pointer-events: none;
+}
+
+.window.holding::after {
+  content: '';
+  position: absolute;
+  inset: -9px;
+  pointer-events: none;
+  background:
+    repeating-linear-gradient(90deg, var(--ink) 0 6px, transparent 6px 12px) 0 0 / 100% 2px no-repeat,
+    repeating-linear-gradient(90deg, var(--ink) 0 6px, transparent 6px 12px) 0 100% / 100% 2px no-repeat,
+    repeating-linear-gradient(0deg, var(--ink) 0 6px, transparent 6px 12px) 0 0 / 2px 100% no-repeat,
+    repeating-linear-gradient(0deg, var(--ink) 0 6px, transparent 6px 12px) 100% 0 / 2px 100% no-repeat;
+  animation: ants 0.6s steps(6) infinite;
+}
+
+@keyframes ants {
   to {
-    background-position: -200% 0;
+    background-position: 12px 0, -12px 100%, 0 -12px, 100% 12px;
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .skeleton {
+  .window.holding::after {
     animation: none;
   }
 }
 
-.hold {
-  margin: 0.9rem 0 0;
-  font-size: 0.85rem;
-  color: var(--muted);
+/* ---------- Controls ---------- */
+
+.field {
+  display: grid;
+  gap: 6px;
+  font-family: var(--display);
+  font-size: 13px;
+  font-weight: 700;
+  text-transform: uppercase;
 }
 
-.hold.active {
-  color: var(--accent);
+.field + .field {
+  margin-top: 18px;
 }
 
-.graph-status {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 0.75rem;
-  margin-top: 2.5rem;
-  padding-top: 1rem;
-  border-top: 1px solid var(--line);
-  font-size: 0.85rem;
-  color: var(--muted);
+.select {
+  appearance: none;
+  width: 100%;
+  font: 400 18px/1.2 var(--body);
+  color: var(--ink);
+  background: var(--paper) var(--chevron) no-repeat right 14px center;
+  background-size: 14px 8px;
+  border: var(--frame) solid var(--ink);
+  border-radius: 0;
+  padding: 10px 40px 10px 12px;
+  box-shadow: 3px 3px 0 var(--ink);
+  cursor: pointer;
 }
 
-.badge {
-  font-weight: 600;
-  color: var(--ok);
-  border: 1px solid currentColor;
-  border-radius: 999px;
-  padding: 0.1rem 0.6rem;
+.select:hover {
+  box-shadow: 3px 3px 0 var(--ink), inset 0 0 0 1px var(--ink);
 }
 
-.badge.bad {
-  color: var(--warn);
+.select:disabled {
+  cursor: progress;
+  background-color: var(--paper);
+  background-image: var(--chevron), var(--dither-25);
+  background-repeat: no-repeat, repeat;
+  background-position: right 14px center, 0 0;
+  background-size: 14px 8px, 2px 2px;
+  box-shadow: none;
+}
+
+.button {
+  font: 700 14px var(--display);
+  text-transform: uppercase;
+  color: var(--ink);
+  background: var(--paper);
+  border: var(--frame) solid var(--ink);
+  border-radius: 8px;
+  padding: 9px 22px;
+  box-shadow: 0 0 0 2px var(--paper), 0 0 0 4px var(--ink);
+  cursor: pointer;
+}
+
+.button:active {
+  background: var(--ink);
+  color: var(--paper);
+}
+
+.pixel-icon {
+  display: block;
+  flex: none;
+  shape-rendering: crispEdges;
+}
+
+/* ---------- Standalone remote pages ---------- */
+
+@media (max-width: 560px) {
+  .window-title {
+    font-size: 13px;
+    padding: 0 10px;
+    max-width: calc(100% - 44px);
+  }
+}
+
+.standalone {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 48px var(--gutter) 64px;
 }

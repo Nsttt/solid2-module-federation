@@ -1,0 +1,249 @@
+.desk {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 128px;
+  gap: 32px var(--gutter);
+  align-items: start;
+  max-width: 1360px;
+  margin: 0 auto;
+  padding: 40px var(--gutter) 72px;
+}
+
+.shell-body {
+  padding: clamp(20px, 3vw, 40px);
+}
+
+.menubar-status {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.headline {
+  margin: 0 0 16px;
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: clamp(2.25rem, 6.2vw, 5rem);
+  line-height: 1.12;
+  letter-spacing: -0.03em;
+  text-transform: uppercase;
+  text-wrap: balance;
+}
+
+.lede {
+  max-width: 62ch;
+  margin: 0 0 40px;
+  font-size: 20px;
+}
+
+/*
+ * The two remote windows overlap like windows do: places sits lower and on
+ * top, its right edge across the forecast window's frame.
+ */
+.remotes {
+  display: grid;
+  grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+  align-items: start;
+  padding-bottom: 12px;
+}
+
+.slot {
+  position: relative;
+  min-width: 0;
+}
+
+.slot-places {
+  z-index: 1;
+  margin-top: 56px;
+  margin-right: -44px;
+}
+
+/* Keep the forecast's text clear of the places window lying across its edge. */
+.slot-forecast .window-info,
+.slot-forecast .window-body,
+.slot-forecast .window-status {
+  padding-left: 64px;
+}
+
+.hold-state {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 2px 8px;
+  font-family: var(--body);
+  font-size: 15px;
+  text-transform: none;
+}
+
+/* While holding, the indicator inverts like an active selection. */
+.hold-state.active {
+  background: var(--ink);
+  color: var(--paper);
+}
+
+.hold-state.active .pixel-icon {
+  fill: var(--paper);
+}
+
+.copies {
+  white-space: nowrap;
+  font-family: var(--display);
+  font-size: 13px;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.copies.bad {
+  background: var(--ink);
+  color: var(--paper);
+  padding: 2px 8px;
+}
+
+.opening {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  min-height: 220px;
+}
+
+.alert-body {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 16px 20px;
+  align-items: center;
+}
+
+.alert-body p {
+  margin: 0;
+}
+
+.alert-body .button {
+  grid-column: 2;
+  justify-self: start;
+}
+
+/* ---------- Desktop icons ---------- */
+
+.desk-icons {
+  display: grid;
+  gap: 28px;
+  justify-items: center;
+  padding-top: 8px;
+}
+
+.desk-icon {
+  display: grid;
+  justify-items: center;
+  gap: 8px;
+  width: 112px;
+  text-align: center;
+  text-decoration: none;
+  font-size: 15px;
+}
+
+.desk-icon span {
+  background: var(--paper);
+  padding: 1px 6px;
+}
+
+.desk-icon:hover span,
+.desk-icon:focus-visible span {
+  background: var(--ink);
+  color: var(--paper);
+}
+
+.desk-icon:focus-visible {
+  outline: none;
+}
+
+.desk-icon:focus-visible .pixel-icon {
+  outline: 2px dotted var(--ink);
+  outline-offset: 4px;
+}
+
+@media (max-width: 900px) {
+  .desk {
+    grid-template-columns: minmax(0, 1fr);
+    padding-top: 24px;
+  }
+
+  .remotes {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 28px;
+  }
+
+  .slot-places {
+    margin: 0;
+  }
+
+  .slot-forecast .window-info,
+  .slot-forecast .window-status {
+    padding-left: 14px;
+  }
+
+  .slot-forecast .window-body {
+    padding-left: clamp(16px, 2vw, 24px);
+  }
+
+  .desk-icons {
+    grid-auto-flow: column;
+    justify-content: center;
+    gap: 12px;
+  }
+
+  .desk-icon {
+    width: 104px;
+  }
+
+  .menubar-wide {
+    display: none;
+  }
+}
+
+.menubar-short {
+  display: none;
+}
+
+/* Phones: the menu bar wraps, and the status becomes its own info strip below. */
+@media (max-width: 560px) {
+  .menubar {
+    flex-wrap: wrap;
+    height: auto;
+    padding-top: 6px;
+    row-gap: 6px;
+  }
+
+  .menubar-name {
+    display: none;
+  }
+
+  .menubar-short {
+    display: inline;
+  }
+
+  .menubar-status {
+    order: 3;
+    flex-basis: calc(100% + 2 * var(--gutter));
+    justify-content: space-between;
+    margin: 0 calc(-1 * var(--gutter));
+    padding: 5px var(--gutter);
+    border-top: var(--frame) solid var(--ink);
+  }
+}
+
+@media (max-width: 360px) {
+  .menubar {
+    gap: 8px;
+  }
+
+  .desk-icons {
+    gap: 6px;
+  }
+
+  .desk-icon {
+    width: 88px;
+  }
+
+  .menubar a {
+    padding: 4px 2px;
+  }
+}

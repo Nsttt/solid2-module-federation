@@ -1,8 +1,9 @@
 import { Loading } from 'solid-js';
 import { render } from '@solidjs/web';
+// The shared system first, so the component's own styles layer on top of it.
+import '../../../theme.css';
 import LocationPicker from './LocationPicker';
 import { LocationContext, createLocation } from './location';
-import '../../../theme.css';
 
 // Standalone mode: the remote renders its own exposed component so it can be
 // developed and tested without the shell.

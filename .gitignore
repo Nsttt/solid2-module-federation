@@ -4,3 +4,8 @@ dist/
 .mf/
 *.log
 .DS_Store
+
+# Impeccable: keep the design record, not the working files.
+.impeccable/*
+!.impeccable/design.json
+**/.impeccable/hook.cache.json
