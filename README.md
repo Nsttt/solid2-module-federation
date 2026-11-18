@@ -18,7 +18,7 @@ Pick a new state and three things happen in three bundles: `places` fetches that
 
 The page is drawn as a one-bit desktop: each bundle is its own window, titled with its name and the host it actually loaded from. Drag any window by its title bar (the front window keeps its stripes); *Clean Up* in the menu bar puts them back. Every window can be closed from its close box and reopened from its desktop icon; a closed federated window keeps its state. The shell owns the desktop, so the remotes never know they can move.
 
-The *places iframe* and *forecast iframe* desktop icons open each remote's own deployed page in an iframe window, right next to its federated version. The iframe is the other way to compose: a separate document with its own copy of Solid, so changing its state touches nothing else on the page, while the federated windows share one graph. During a change both remote windows dim under a dither with marching ants and update together; the menu bar shows the hold and how many copies of Solid are running (in production, read from Module Federation's share record). The design system is recorded in [`DESIGN.md`](DESIGN.md) and the product context in [`PRODUCT.md`](PRODUCT.md).
+The desktop icons open windows too: *Repository* is a folder window listing the repo's real contents from GitHub's API, *Solid 2.0 post* shows the post's outline (solidjs.com refuses to be framed) with a link to read it, and *Zephyr Cloud* frames the real site.
 
 ## Run it
 

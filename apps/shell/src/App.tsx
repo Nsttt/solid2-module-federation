@@ -1,19 +1,16 @@
-import { createMemo, Errored, For, isPending, lazy, Loading, Show, type ParentComponent } from 'solid-js';
+import { Errored, For, isPending, lazy, Loading, Show, type Element as SolidElement, type ParentComponent } from 'solid-js';
 import { Portal } from '@solidjs/web';
 import { createLocation, LocationContext } from 'places/location';
-import { createDesktop, type Desktop, type FrameId, type WindowId } from './desktop';
+import { createDesktop, FLOATING, type Desktop, type FloatingId, type WindowId } from './desktop';
 import { GraphStatus } from './GraphStatus';
 import { bundleHost } from './origin';
-import { ALERT, APP, CHECK, DISK, DOCUMENT, FOLDER, FRAME, HOURGLASS, MARK, PixelIcon } from './pixel';
-import { remoteBase } from './remote-base';
+import { ALERT, APP, CHECK, DISK, DOCUMENT, FOLDER, HOURGLASS, MARK, PixelIcon } from './pixel';
+import { PostContents, RELEASE_POST, REPO, RepoContents, ZephyrContents } from './windows';
 import './App.css';
 
 // Components from two other bundles, each fetched on first render.
 const LocationPicker = lazy(() => import('places/LocationPicker'));
 const Forecast = lazy(() => import('forecast/Forecast'));
-
-const REPO = 'https://github.com/Nsttt/solid2-module-federation';
-const RELEASE_POST = 'https://www.solidjs.com/blog/solid-2-0-the-long-hold/';
 
 const errorMessage = (error: unknown) => (error instanceof Error ? error.message : String(error));
 
@@ -22,9 +19,17 @@ const WINDOWS: { id: WindowId; label: string; icon: readonly string[] }[] = [
   { id: 'shell', label: 'shell', icon: APP },
   { id: 'places', label: 'places', icon: APP },
   { id: 'forecast', label: 'forecast', icon: APP },
-  { id: 'places-frame', label: 'places iframe', icon: FRAME },
-  { id: 'forecast-frame', label: 'forecast iframe', icon: FRAME },
+  { id: 'repo', label: 'Repository', icon: FOLDER },
+  { id: 'post', label: 'Solid 2.0 post', icon: DOCUMENT },
+  { id: 'zephyr', label: 'Zephyr Cloud', icon: DISK },
 ];
+
+/** The floating windows: their title and what goes inside. */
+const FLOATING_WINDOWS: Record<FloatingId, { title: string; contents: () => SolidElement }> = {
+  repo: { title: 'Repository', contents: () => <RepoContents /> },
+  post: { title: 'Solid 2.0 post', contents: () => <PostContents /> },
+  zephyr: { title: 'Zephyr Cloud', contents: () => <ZephyrContents /> },
+};
 
 export default function App() {
   // Reactive state whose code lives in the `places` remote, created here, in
@@ -142,13 +147,14 @@ export default function App() {
             </Loading>
           </Errored>
 
-          {/* The same remotes, loaded the other way: each one's own deployed page in an iframe. */}
-          <Show when={desktop.isOpen('places-frame')}>
-            <FrameWindow id="places-frame" name="places" desktop={desktop} />
-          </Show>
-          <Show when={desktop.isOpen('forecast-frame')}>
-            <FrameWindow id="forecast-frame" name="forecast" desktop={desktop} />
-          </Show>
+          {/* Windows opened from the desktop icons; they unmount when closed. */}
+          <For each={FLOATING as FloatingId[]}>
+            {(id) => (
+              <Show when={desktop.isOpen(id)}>
+                <FloatingWindow id={id} desktop={desktop} />
+              </Show>
+            )}
+          </For>
         </div>
 
         <nav class="desk-icons" aria-label="Desktop">
@@ -166,18 +172,6 @@ export default function App() {
               </button>
             )}
           </For>
-          <a class="desk-icon" href={REPO}>
-            <PixelIcon art={FOLDER} scale={3} />
-            <span>Repository</span>
-          </a>
-          <a class="desk-icon" href={RELEASE_POST}>
-            <PixelIcon art={DOCUMENT} scale={3} />
-            <span>Solid 2.0 post</span>
-          </a>
-          <a class="desk-icon" href="https://zephyr-cloud.io">
-            <PixelIcon art={DISK} scale={3} />
-            <span>Zephyr Cloud</span>
-          </a>
         </nav>
       </main>
 
@@ -192,7 +186,7 @@ export default function App() {
  */
 const Slot: ParentComponent<{ id: WindowId; desktop: Desktop }> = (props) => (
   <div
-    class={['slot', `slot-${props.id}`]}
+    class={['slot', `slot-${props.id}`, { 'slot-floating': FLOATING.includes(props.id) }]}
     data-window={props.id}
     data-active={props.desktop.isActive(props.id) ? 'true' : undefined}
     // Closed windows hide rather than unmount, so their state and data live on.
@@ -205,53 +199,31 @@ const Slot: ParentComponent<{ id: WindowId; desktop: Desktop }> = (props) => (
     {props.children}
     {/*
       The host's own close box, laid exactly over the window's drawn one. It
-      works the same on the shell's window and on the remotes' windows, which
-      never know they can be closed. Iframe windows carry their own.
+      works the same on every window, including the remotes' windows, which
+      never know they can be closed.
     */}
-    <Show when={!props.id.endsWith('-frame')}>
-      <button
-        type="button"
-        class="window-close host-close"
-        aria-label={`Close the ${props.id} window`}
-        onClick={() => props.desktop.close(props.id)}
-      />
-    </Show>
+    <button
+      type="button"
+      class="window-close host-close"
+      aria-label={`Close the ${props.id} window`}
+      onClick={() => props.desktop.close(props.id)}
+    />
   </div>
 );
 
-/**
- * A remote's own deployed page in an iframe. Unlike the federated windows, it is
- * a separate document with its own copy of Solid and its own state, so nothing
- * done here reaches the rest of the desktop.
- */
-function FrameWindow(props: { id: FrameId; name: 'places' | 'forecast'; desktop: Desktop }) {
-  const src = createMemo(() => remoteBase(props.name));
-  const host = createMemo(() => {
-    const url = src();
-    return url ? new URL(url).host : 'unknown host';
-  });
-
+/** A window opened from a desktop icon: shared chrome around its own contents. */
+function FloatingWindow(props: { id: FloatingId; desktop: Desktop }) {
+  const spec = () => FLOATING_WINDOWS[props.id];
   return (
     <Slot id={props.id} desktop={props.desktop}>
-      <section class="window frame-window" aria-labelledby={`${props.id}-title`}>
+      <section class={['window', 'floating-window', `${props.id}-window`]} aria-labelledby={`${props.id}-title`}>
         <header class="window-bar">
-          <button
-            type="button"
-            class="window-close"
-            aria-label={`Close the ${props.name} iframe`}
-            onClick={() => props.desktop.close(props.id)}
-          />
+          <span class="window-close" aria-hidden="true" />
           <h2 id={`${props.id}-title`} class="window-title">
-            {props.name} — iframe
+            {spec().title}
           </h2>
         </header>
-        <div class="window-info">
-          <span>Own document, own copy of Solid</span>
-          <span class="host">{host()}</span>
-        </div>
-        <Show when={src()} fallback={<div class="window-body">Couldn't find where {props.name} was loaded from.</div>}>
-          {(url) => <iframe class="frame" src={url()} title={`${props.name}, loaded in an iframe`} />}
-        </Show>
+        {spec().contents()}
       </section>
     </Slot>
   );

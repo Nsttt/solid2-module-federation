@@ -80,13 +80,13 @@ body.dragging iframe {
   pointer-events: none;
 }
 
-/* ---------- Iframe windows ---------- */
+/* ---------- Floating windows (opened from the desktop icons) ---------- */
 
 .desk-windows {
   position: relative;
 }
 
-.frame-window {
+.floating-window {
   display: flex;
   flex-direction: column;
 }
@@ -103,6 +103,10 @@ body.dragging iframe {
 button.window-close {
   padding: 0;
   cursor: pointer;
+}
+
+button.window-close:active {
+  background: var(--ink);
 }
 
 /* The host's close box sits exactly over the window's drawn one: 2px frame + 12px in, centered in the 34px bar. */
@@ -126,24 +130,94 @@ button.window-close {
   mask: var(--dither-50) 0 0 / 2px 2px;
 }
 
-button.window-close:active {
+.window-note {
+  margin: 0 0 16px;
+  max-width: 48ch;
+}
+
+/* The repository as a Finder window: icons in a grid, names under them. */
+.finder {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(104px, 1fr));
+  gap: 18px 8px;
+}
+
+.finder a {
+  display: grid;
+  justify-items: center;
+  gap: 6px;
+  text-align: center;
+  text-decoration: none;
+  font-size: 14px;
+  overflow-wrap: anywhere;
+}
+
+.finder a:hover span,
+.finder a:focus-visible span {
   background: var(--ink);
+  color: var(--paper);
+}
+
+.finder a:focus-visible {
+  outline: none;
+}
+
+.finder a:focus-visible .pixel-icon {
+  outline: 2px dotted var(--ink);
+  outline-offset: 3px;
+}
+
+.post-title {
+  margin: 0 0 6px;
+  font-family: var(--display);
+  font-size: clamp(20px, 2.2vw, 26px);
+  font-weight: 700;
+  line-height: 1.15;
+  text-transform: uppercase;
+}
+
+.post-byline {
+  margin: 0 0 16px;
+  font-size: 15px;
+}
+
+.post p {
+  max-width: 52ch;
+}
+
+.post-outline {
+  margin: 0;
+  padding-left: 1.4em;
+}
+
+.post-outline li + li {
+  margin-top: 4px;
 }
 
 @media (min-width: 901px) {
-  [data-window$='-frame'] {
+  .slot-floating {
     position: absolute;
-    width: min(480px, 46%);
   }
 
-  [data-window='places-frame'] {
+  .slot-repo {
     top: 64px;
     right: 24px;
+    width: min(500px, 48%);
   }
 
-  [data-window='forecast-frame'] {
+  .slot-post {
     top: 112px;
     right: 64px;
+    width: min(460px, 44%);
+  }
+
+  .slot-zephyr {
+    top: 160px;
+    right: 104px;
+    width: min(680px, 62%);
   }
 }
 
@@ -350,7 +424,7 @@ button.desk-icon {
     gap: 16px 12px;
   }
 
-  [data-window$='-frame'] {
+  .slot-floating {
     margin-top: 28px;
   }
 

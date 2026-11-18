@@ -1,10 +1,12 @@
 import { createStore } from 'solid-js';
 
-export type FrameId = 'places-frame' | 'forecast-frame';
-export type WindowId = 'shell' | 'places' | 'forecast' | FrameId;
+/** Windows that open on demand from a desktop icon, floating over the desk. */
+export type FloatingId = 'repo' | 'post' | 'zephyr';
+export type WindowId = 'shell' | 'places' | 'forecast' | FloatingId;
+export const FLOATING: readonly WindowId[] = ['repo', 'post', 'zephyr'];
 type Point = { x: number; y: number };
 
-const IDS: WindowId[] = ['shell', 'forecast', 'places', 'places-frame', 'forecast-frame'];
+const IDS: WindowId[] = ['shell', 'forecast', 'places', ...(FLOATING as FloatingId[])];
 const START_ORDER: WindowId[] = ['shell', 'forecast', 'places'];
 /** How much of a title bar must stay on screen, so a window can always be grabbed again. */
 const GRIP = 96;
@@ -74,7 +76,7 @@ export function createDesktop() {
   /** Open a window, or bring it to the front if it is already open. */
   const open = (id: WindowId) => raise(id);
 
-  /** Close a window. Federated windows only hide (their state lives on); iframes unmount. */
+  /** Close a window. The three app windows only hide (their state lives on); floating windows unmount. */
   const close = (id: WindowId) =>
     setState((s) => {
       s.order = s.order.filter((other) => other !== id);
