@@ -326,3 +326,17 @@ body.dragging * {
     padding: 4px 2px;
   }
 }
+
+/* The production label ("Solid shared by 3 bundles") is the longest; on small
+   phones the hold indicator keeps its icon and gives the label the room. */
+@media (max-width: 420px) {
+  .hold-text {
+    display: none;
+  }
+}
+
+@media (max-width: 360px) {
+  .copies {
+    font-size: 11px;
+  }
+}

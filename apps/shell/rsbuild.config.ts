@@ -33,5 +33,5 @@ export default defineConfig(({ command }) => ({
     strictPort: true,
     cors: { origin: ['http://localhost:3000', 'http://localhost:3001', 'http://localhost:3002'] },
   },
-  html: { title: 'Solid 2.0 × Module Federation' },
+  html: { title: 'Solid 2.0 × Module Federation', favicon: './src/favicon.svg' },
 }));

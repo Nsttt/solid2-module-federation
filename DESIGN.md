@@ -198,7 +198,7 @@ The three windows are siblings on the desk. The shell window holds the headline 
 
 Spacing inside windows is quiet: info and status strips are 6px × 14px, window bodies clamp(16px, 2vw, 24px) (the shell body clamp(20px, 3vw, 40px)), fields stack 18px apart. Forecast days are a four-column grid (day, 32px icon, sky, temps) separated by 2px dotted ink rules.
 
-Responsive behavior: at 900px the desk drops to one column, dragging turns off and any moved window snaps back to its place, the remotes stack with a 28px gap and no overlap, the desk icons become a centered row under the shell, and the secondary menu link hides. At 560px the menu bar wraps, the wordmark shortens, and the status becomes its own full-bleed strip under a 2px rule. At 480px each forecast row becomes icon / day over sky / temps. At 360px gaps and icon widths tighten further. Standalone remote pages center a single window in 760px.
+Responsive behavior: at 900px the desk drops to one column, dragging turns off and any moved window snaps back to its place, the remotes stack with a 28px gap and no overlap, the desk icons become a centered row under the shell, and the secondary menu link hides. At 560px the menu bar wraps, the wordmark shortens, and the status becomes its own full-bleed strip under a 2px rule. At 480px each forecast row becomes icon / day over sky / temps. At 420px the hold indicator keeps only its icon so the production status label ("Solid shared by 3 bundles") fits on one line; at 360px that label steps down to 11px. At 360px gaps and icon widths tighten further. Standalone remote pages center a single window in 760px.
 
 ## Elevation & Depth
 
