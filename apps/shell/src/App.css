@@ -188,6 +188,61 @@ button.window-close:active {
   max-width: 52ch;
 }
 
+/* The post reads in a scrolling column inside its window. */
+.post-scroll {
+  max-height: min(520px, 62vh);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+
+.post-scroll > p,
+.post-scroll .md-quote,
+.post-scroll .md-list {
+  max-width: 60ch;
+}
+
+.md-heading {
+  margin: 28px 0 10px;
+  font-family: var(--display);
+  font-size: 16px;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.md-code {
+  margin: 14px 0;
+  padding: 12px 14px;
+  border: var(--frame) solid var(--ink);
+  box-shadow: 3px 3px 0 var(--ink);
+  overflow-x: auto;
+  font: 13px/1.5 ui-monospace, 'SF Mono', Menlo, monospace;
+  -webkit-font-smoothing: auto;
+}
+
+.md-code code {
+  font: inherit;
+}
+
+.post-scroll p code,
+.post-scroll .md-quote code {
+  font-family: ui-monospace, 'SF Mono', Menlo, monospace;
+  font-size: 0.85em;
+  padding: 0 3px;
+  border: 1px solid var(--ink);
+}
+
+.md-quote {
+  margin: 16px 0;
+  padding: 10px 14px;
+  border: var(--frame) dotted var(--ink);
+}
+
+.md-rule {
+  border: 0;
+  border-top: var(--frame) dotted var(--ink);
+  margin: 24px 0;
+}
+
 .post-outline {
   margin: 0;
   padding-left: 1.4em;
@@ -211,7 +266,7 @@ button.window-close:active {
   .slot-post {
     top: 112px;
     right: 64px;
-    width: min(460px, 44%);
+    width: min(620px, 54%);
   }
 
   .slot-zephyr {

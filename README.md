@@ -18,7 +18,7 @@ Pick a new state and three things happen in three bundles: `places` fetches that
 
 The page is drawn as a one-bit desktop: each bundle is its own window, titled with its name and the host it actually loaded from. Drag any window by its title bar (the front window keeps its stripes); *Clean Up* in the menu bar puts them back. Every window can be closed from its close box and reopened from its desktop icon; a closed federated window keeps its state. The shell owns the desktop, so the remotes never know they can move.
 
-The desktop icons open windows too: *Repository* is a folder window listing the repo's real contents from GitHub's API, *Solid 2.0 post* shows the post's outline (solidjs.com refuses to be framed) with a link to read it, and *Zephyr Cloud* frames the real site.
+The desktop icons open windows too: *Repository* is a folder window listing the repo's real contents from GitHub's API, *Solid 2.0 post* renders the full post live from its source in [solidjs/solid-site](https://github.com/solidjs/solid-site) (solidjs.com refuses to be framed), with a link to the original, and *Zephyr Cloud* frames the real site.
 
 ## Run it
 

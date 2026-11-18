@@ -1,4 +1,5 @@
 import { createMemo, Errored, For, Loading } from 'solid-js';
+import { Markdown, parsePost } from './markdown';
 import { DOCUMENT, FOLDER, HOURGLASS, PixelIcon } from './pixel';
 
 export const REPO = 'https://github.com/Nsttt/solid2-module-federation';
@@ -6,6 +7,15 @@ export const RELEASE_POST = 'https://www.solidjs.com/blog/solid-2-0-the-long-hol
 export const ZEPHYR = 'https://zephyr-cloud.io/';
 
 const REPO_API = 'https://api.github.com/repos/Nsttt/solid2-module-federation';
+/** The post's own source in the Solid website repository, fetched by the visitor's browser. */
+const POST_SOURCE = 'https://raw.githubusercontent.com/solidjs/solid-site/main/src/routes/blog/solid-2-0-the-long-hold.mdx';
+const POST_SOURCE_PAGE = 'https://github.com/solidjs/solid-site/blob/main/src/routes/blog/solid-2-0-the-long-hold.mdx';
+
+async function fetchPost() {
+  const res = await fetch(POST_SOURCE);
+  if (!res.ok) throw new Error(`GitHub responded ${res.status}`);
+  return parsePost(await res.text(), RELEASE_POST);
+}
 
 type Entry = { name: string; type: 'file' | 'dir'; html_url: string };
 type RepoInfo = { description: string | null; default_branch: string; stargazers_count: number };
@@ -83,12 +93,56 @@ export function RepoContents() {
   );
 }
 
-/** The release post's outline. solidjs.com refuses to be framed, so the window says so and links out. */
+/**
+ * The release post itself. solidjs.com refuses to be framed, so the window
+ * renders the post from its public source in the Solid website repository,
+ * with its byline and a link to the original. If that source can't be
+ * reached, it falls back to the post's outline.
+ */
 export function PostContents() {
+  const post = createMemo(() => fetchPost());
+
+  return (
+    <Errored fallback={<PostOutline />}>
+      <Loading fallback={<Opening what="the post" />}>
+        <div class="window-info">
+          <span>Rendered from the post's source</span>
+          <span class="host">solidjs/solid-site</span>
+        </div>
+        <article class="window-body post post-scroll">
+          <h3 class="post-title">{post().meta.title}</h3>
+          <p class="post-byline">
+            {post().meta.author} · {formatDate(post().meta.date)}
+          </p>
+          <Markdown blocks={post().blocks} />
+        </article>
+        <footer class="window-status">
+          <a href={POST_SOURCE_PAGE} target="_blank" rel="noopener">
+            Source
+          </a>
+          <a href={RELEASE_POST} target="_blank" rel="noopener">
+            Read on solidjs.com
+          </a>
+        </footer>
+      </Loading>
+    </Errored>
+  );
+}
+
+function formatDate(date: string | undefined) {
+  if (!date) return '';
+  const parsed = new Date(`${date}T12:00:00`);
+  return Number.isNaN(parsed.getTime())
+    ? date
+    : parsed.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+}
+
+/** Fallback when the source can't be fetched: the post's outline and a link to read it. */
+function PostOutline() {
   return (
     <>
       <div class="window-info">
-        <span>solidjs.com doesn't allow embedding</span>
+        <span>Couldn't load the post's source</span>
         <span class="host">solidjs.com</span>
       </div>
       <div class="window-body post">
