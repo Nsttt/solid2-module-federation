@@ -32,16 +32,14 @@ pnpm typecheck
 
 ## The shared config
 
-[`mf.shared.ts`](mf.shared.ts) is used by all three apps:
+Each app's `rsbuild.config.ts` ([shell](apps/shell/rsbuild.config.ts), [places](apps/places/rsbuild.config.ts), [forecast](apps/forecast/rsbuild.config.ts)) declares the same `shared` block:
 
 ```ts
-const solid = { singleton: true, requiredVersion: '^2.0.0' } as const;
-
-export const sharedSolid = {
-  'solid-js': solid,
-  '@solidjs/web': solid,
-  '@solidjs/signals': solid,
-};
+shared: {
+  'solid-js': { singleton: true, requiredVersion: '^2.0.0' },
+  '@solidjs/web': { singleton: true, requiredVersion: '^2.0.0' },
+  '@solidjs/signals': { singleton: true, requiredVersion: '^2.0.0' },
+},
 ```
 
 Solid 2.0 keeps its scheduler, owner tree and transition state in `@solidjs/signals`, so every bundle has to share that one copy for async, context and transitions to work across them. List it by name: `solid-js/internal`, which `@solidjs/web` imports, isn't covered by the `'solid-js'` key and pulls in `@solidjs/signals` directly.
